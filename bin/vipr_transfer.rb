@@ -2,6 +2,7 @@
 $:.unshift File.join(File.dirname(__FILE__),'..', 'lib')
 require 'vipr_transfer'
 require 'pp'
+require 'optparse'
 
 def run!
   include ViprTransfer
@@ -21,19 +22,27 @@ def run!
 end
 
 def parse_options
-  options = {:rotate => true}
+  options = {:dry_run => false}
   parser = OptionParser.new do |opts|
-    opts.banner = "Usage: #{File.basename(__FILE__)} [options] input_directory output_directory"
+    opts.banner = "Usage: #{File.basename(__FILE__)} [options]"
 
-    opts.on('-s', '--spec SPEC', "Spec File for script parameters")     do |spec_file| 
-      options[:spec_file] = spec_file
+    opts.on('-d', '--date DATE', "Scan date") do |date|
+      options[:date] = Date.parse(date)
     end
     
-    opts.on('-p', '--prefix PREFIX', "Filename Prefix")     do |prefix| 
-      options[:file_prefix] = prefix
+    opts.on('-e', '--exam EXAM', "Exam Number") do |exam_number|
+      options[:exam_number] = exam_number
     end
 
-    opts.on('-d', '--dry-run', "Display Script without executing it.") do
+    opts.on('-p', '--protocol PROTOCOL', "Study Protocol")  do |study_protocol|
+      options[:study_protocol] = study_protocol
+    end
+    
+    opts.on('-s', '--subject SUBJECT', "Subject ID")  do |subj_id|
+      options[:subj_id] = subj_id
+    end
+    
+    opts.on('-r', '--dry-run', "Display Script without executing it.") do
       options[:dry_run] = true
     end
 
@@ -41,30 +50,8 @@ def parse_options
       options[:force_overwrite] = true
     end
     
-    opts.on('-m', '--mask MASK', "Add an arbitrary mask to apply to data.") do |mask|
-      options[:mask] = File.expand_path(mask)
-      abort "Cannot find mask #{mask}." unless (File.exist?(options[:mask]) || options[:dry_run])
-    end
-    
-    opts.on('-t', '--tmp', "Sandbox the input directory in the case of zipped dicoms.") do
-      options[:force_sandbox] = true
-    end
-    
-    opts.on('--values VALUES_FILE', "Specify a b-values file.") do |bvalues_file|
-      options[:bvalues_file] = bvalues_file
-    end
-        
-    opts.on('--vectors VECTORS_FILE', "Specify a b-vectors file.") do |bvectors_file|
-      options[:bvectors_file] = bvectors_file
-    end
-    
-    opts.on('--no-rotate', "Don't rotate vectors prior to processing") do
-      options[:rotate] = false
-    end
-    
-
     opts.on_tail('-h', '--help',          "Show this message")          { puts(parser); exit }
-    opts.on_tail("Example: #{File.basename(__FILE__)} -s configuration/dti_spec.yaml -p pd006 raw/pd006 orig/pd006")
+    opts.on_tail("Example: #{File.basename(__FILE__)} -d 110708 -e 4065 -p 9000 -s vipr_test")
   end
   parser.parse!(ARGV)
 

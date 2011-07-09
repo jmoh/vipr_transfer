@@ -2,7 +2,7 @@ module ViprTransfer
 
 class Transferrer
   def initialize(options={})
-    default_options={:dry_run => true, :host => "cn0", :user => "sterling", :password => "password"}
+    default_options={:host => "cn0", :user => "sterling", :password => "password"}
     @config = default_options.merge(options)
     
     
