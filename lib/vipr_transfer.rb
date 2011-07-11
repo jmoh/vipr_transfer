@@ -1,9 +1,8 @@
 require 'rubygems'
-require 'net/ssh'
-require 'net/scp'
-require 'progressbar'
+require 'bundler'
 require 'date'
 
+Bundler.setup(:default)
 
 require 'vipr_transfer/transferrer'
 
