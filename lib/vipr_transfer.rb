@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'bundler'
 require 'date'
+require 'fileutils'
 
 Bundler.setup(:default)
 
