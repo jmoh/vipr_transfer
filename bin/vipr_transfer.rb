@@ -9,16 +9,20 @@ def run!
   
   
   # Parse CLI Options and Spec File
-  # options = parse_options
-  options = {:date => Date.parse("110708"), :exam_number => 4065, 
-  :subj_id => "vipr_test", :study_protocol => "9000", :dry_run => false}
+  options = parse_options
+  # options = {:date => Date.parse("110708"), :exam_number => 4065, 
+  # :subj_id => "vipr_test", :study_protocol => "9000", :dry_run => false}
   
   # config = load_spec(options[:spec_file])
   # config.merge!(options)
   
-  # Run the Transfer
-  t = Transferrer.new options
-  t.transfer
+  begin
+    # Run the Transfer
+    t = Transferrer.new options
+    t.transfer
+  rescue IOError => e
+    puts e
+  end
 end
 
 def parse_options
@@ -26,7 +30,7 @@ def parse_options
   parser = OptionParser.new do |opts|
     opts.banner = "Usage: #{File.basename(__FILE__)} [options]"
 
-    opts.on('-d', '--date DATE', "Scan date") do |date|
+    opts.on('-d', '--date YYMMDD', "Scan date, format YYMMDD") do |date|
       options[:date] = Date.parse(date)
     end
     
@@ -55,12 +59,25 @@ def parse_options
   end
   parser.parse!(ARGV)
 
-  if ARGV.size == 0
-    # puts "Problem with arguments: #{ARGV}"
+  missing_options = check_missing options
+  unless missing_options.empty?
+    puts "\nMissing required options: #{missing_options.join(",")}"; puts
     puts(parser); exit
   end
   
   return options
+end
+
+def check_missing options
+  missing_options = []
+  required_options = [:date, :exam_number, :study_protocol, :subj_id]
+  required_options.each do |key|
+    if !options.has_key?(key) || options[key] == ''
+      missing_options << key
+    end
+  end
+  return missing_options
+  
 end
 
 if File.basename(__FILE__) == File.basename($0)

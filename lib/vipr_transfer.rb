@@ -3,6 +3,7 @@ require 'net/ssh'
 require 'net/scp'
 require 'progressbar'
 require 'date'
+require 'fileutils'
 
 
 require 'vipr_transfer/transferrer'
