@@ -30,7 +30,7 @@ def parse_options
   parser = OptionParser.new do |opts|
     opts.banner = "Usage: #{File.basename(__FILE__)} [options]"
 
-    opts.on('-d', '--date YYMMDD', "Scan date, format YYMMDD") do |date|
+    opts.on('-d', '--date YYYYMMDD', "Scan date, format YYYYMMDD") do |date|
       options[:date] = Date.parse(date)
     end
     
@@ -55,7 +55,7 @@ def parse_options
     end
     
     opts.on_tail('-h', '--help',          "Show this message")          { puts(parser); exit }
-    opts.on_tail("Example: #{File.basename(__FILE__)} -d 110708 -e 4065 -p 9000 -s vipr_test")
+    opts.on_tail("Example: #{File.basename(__FILE__)} -d 20110715 -e 4321 -p johnson.pipr.visit1/mri -s pipr00938")
   end
   parser.parse!(ARGV)
 

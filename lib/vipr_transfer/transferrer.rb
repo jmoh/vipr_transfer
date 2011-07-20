@@ -11,7 +11,7 @@ class Transferrer
     
     @config[:vipr_dir_base]       = "#{@config[:date].strftime("%y%m%d")}_E#{@config[:exam_number]}"
     @config[:vipr_dir_with_subj]  = "#{@config[:vipr_dir_base]}_#{@config[:subj_id]}"
-    @config[:subj_raw_dir]        = "/Data/vtrak1/raw/#{@config[:study_protocol]}/#{@config[:subj_id]}_#{@config[:exam_number]}_#{@config[:date].strftime("%d%m%Y")}"
+    @config[:subj_raw_dir]        = "/Data/vtrak1/raw/#{@config[:study_protocol]}/#{@config[:subj_id]}_#{@config[:exam_number]}_#{@config[:date].strftime("%m%d%Y")}"
   end
   
   def transfer
