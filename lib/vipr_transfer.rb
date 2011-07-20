@@ -3,7 +3,7 @@ require 'bundler'
 require 'date'
 require 'fileutils'
 
-Bundler.setup(:default)
+Bundler.require(:default)
 
 require 'vipr_transfer/transferrer'
 
